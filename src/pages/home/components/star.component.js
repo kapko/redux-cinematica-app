@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Image from '../../../common/components/image/image.component';
 
 export default class StarComponent extends Component {
     render() {
@@ -6,18 +7,17 @@ export default class StarComponent extends Component {
             return <h1>Don't have any items</h1>;
         }
 
-        return this.props.data.map((item, i) =>
-            <div
-            key={i}
-            className="card"
-            style={{
-                width: '18rem',
-                float: "left",
-                margin: '5px',
-                minHeight: "600px"
-            }}>
-                <img src={item.image}
-                style={{maxHeight:"400px"}} className="card-img-top" alt={item.name} />
+        return this.props.data.map((item, i) => {
+            return <div
+                key={i}
+                className="card"
+                style={{
+                    width: '30%',
+                    float: "left",
+                    margin: '5px',
+                    minHeight: "600px"
+                }}>
+                <Image class="card-img-top" src={item.image} />
                 <div className="card-body">
                     <h5 className="card-title"><b>name:</b> {item.name}</h5>
                     <p className="card-text"><b>gender:</b>  {item.gender}</p>
@@ -25,6 +25,7 @@ export default class StarComponent extends Component {
                     <a href={'/'} className="btn btn-primary">Show details</a>
                 </div>
             </div>
+        }
         )
     }
 }

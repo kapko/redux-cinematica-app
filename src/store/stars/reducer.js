@@ -8,19 +8,18 @@ const initialState = {
 }
 
 export default function reducer(state = initialState, action) {
-    console.log(action);
     switch (action.type) {
         case start_types.FETCHINNG_STARS_FULLFIELD:
             return {
                 ...state,
                 loading: false,
-                results: action.payload.data
+                count: 20,
+                results: action.payload.data.splice(0, 20)
             };
         case start_types.FETCHINNG_STARS_REJECTED:
             return {
-                ...state,
                 loading: action.loading,
-                results: action.payload
+                error: action.payload
             };
         case start_types.REMOVE_ITEM:
             const id = state.findIndex(i => i.id === action.id);
