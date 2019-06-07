@@ -13,8 +13,8 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                count: 20,
-                results: action.payload.data.splice(0, 20)
+                count: action.payload.data.length,
+                results: action.payload.data
             };
         case start_types.FETCHINNG_STARS_REJECTED:
             return {

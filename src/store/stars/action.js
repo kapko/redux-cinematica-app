@@ -6,10 +6,10 @@ export const start_types = {
     FETCHINNG_STARS: 'FETCHINNG_STARS'
 }
 
-export const setStars = res => dispatch => {
+export const setStars = payload => dispatch => {
     dispatch({
         type: start_types.FETCHINNG_STARS,
-        payload: res,
+        payload,
         loading: false,
     })
 };
