@@ -1,69 +1,165 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import {Link} from 'react-router-dom'
 // local files
-import Input from '../../common/fields/input'
-import { fetchStar, removeStarById } from '../../store/stars/action'
+import { fetchStar, updateStar } from '../../store/stars/action'
+import { RadioButton, Button, Input } from '../../common/fields'
+import {isRequired} from '../../common/helpers/validator'
+
+const genderData = [
+    {
+        label: 'Male',
+        name: 'gender',
+        value: 'male'
+    },
+    {
+        label: 'Female',
+        name: 'gender',
+        value: 'female'
+    }
+];
 
 class UpdateStarPage extends Component {
-    mock = `{"id":1,"name":"Luke Skywalker","height":1.72,"mass":73,"gender":"male","homeworld":"tatooine","wiki":"http://starwars.wikia.com/wiki/Luke_Skywalker","image":"https://vignette.wikia.nocookie.net/starwars/images/2/20/LukeTLJ.jpg","born":-19,"bornLocation":"polis massa","died":34,"diedLocation":"ahch-to","species":"human","hairColor":"blond","eyeColor":"blue","skinColor":"light","cybernetics":"Prosthetic right hand","affiliations":["Alliance to Restore the Republic","Red Squadron","Rogue Squadron","Massassi Group","Leia Organa's team","Endor strike team","Jedi Order","Bright Tree tribe","New Republic","Resistance"],"masters":["Obi-Wan Kenobi","Yoda"],"apprentices":["Leia Organa","Ben Solo (along with a dozen apprentices)","Rey"],"formerAffiliations":[]}`;
 
     state = {
-        name: '',
-        species: '',
-        diedLocation: '',
-        died: '',
-        gender: '',
-        mass: '',
-        height: ''
+        data: {
+            name: '',
+            species: '',
+            diedLocation: '',
+            died: '',
+            gender: '',
+            mass: '',
+            height: ''
+        },
+        errors: null
     }
 
-    componentDidMount() {
-        // const {results, singleStar} = this.props.data;
+    componentWillMount() {
+        this.updateFields();
+        this.fetchStars();
+    }
 
-        // if (!results.length) {
-        //     this.redirectToHome();
-        //     return;
-        // }
+    updateFields() {
+        const {results, singleStar} = this.props.data;
 
-        // const {name} = singleStar;
-        // this.setState({ name,  })
-        const data = JSON.parse(this.mock);
+        if (!results.length) {
+            this.redirectToHome();
+            return;
+        }
 
         this.setState({
-            name: data.name
+            data: {
+                id: singleStar.id,
+                name: singleStar.name,
+                species: singleStar.species,
+                diedLocation: singleStar.diedLocation,
+                died: singleStar.died,
+                gender: singleStar.gender,
+                mass: singleStar.mass,
+                height: singleStar.height
+            }
         });
 
     }
 
-    componentWillMount() {
-        this.fetchStars();
-    }
-
     render() {
-        const { singleStar } = this.props.data;
-        console.log('singleStar', singleStar);
+        const { data, } = this.state;
+        const errors = this.state.errors || {};
 
         return <div>
             <h3>Update this Star</h3>
-            <form>
+            <Link to="/">Home page</Link>
+            <form onSubmit={this.onSubmit.bind(this)}>
                 <Input
                     type="text"
-                    value="kap12"
+                    value={data.name}
                     name="name"
                     label="Name"
                     id="name"
-                    errorText="some errors"
-                    onChange={this.onChange.bind(this)}/>
+                    errorText={errors.name}
+                    onChange={this.onChange.bind(this)} />
+                <Input
+                    type="text"
+                    value={data.species}
+                    name="species"
+                    label="Species"
+                    id="species"
+                    errorText={errors.species}
+                    onChange={this.onChange.bind(this)} />
+                <Input
+                    type="text"
+                    value={data.diedLocation}
+                    name="diedLocation"
+                    label="Sied Location"
+                    id="diedLocation"
+                    errorText={errors.diedLocation}
+                    onChange={this.onChange.bind(this)} />
+                <Input
+                    type="number"
+                    value={data.died}
+                    name="died"
+                    label="Sied Location"
+                    id="Died"
+                    errorText={errors.died}
+                    onChange={this.onChange.bind(this)} />
+                <Input
+                    type="number"
+                    value={data.mass}
+                    name="mass"
+                    label="Mass"
+                    id="mass"
+                    errorText={errors.mass}
+                    onChange={this.onChange.bind(this)} />
+                <Input
+                    type="number"
+                    value={data.height}
+                    name="height"
+                    label="Height"
+                    id="height"
+                    errorText={errors.height}
+                    onChange={this.onChange.bind(this)} />
+                    
+                <RadioButton
+                    data={genderData}
+                    checked={data.gender}
+                    onChange={this.onChange.bind(this)} />
+                <hr/>
+                <Button text="Update" className="btn btn-primary" />
             </form>
         </div>
     }
 
     onChange(e) {
-        console.log(e);
+        const data = { ...this.state.data, [e.target.name]: e.target.value }
+        this.setState({ data });
     }
-    
+
+    onSubmit(e) {
+        e.preventDefault();
+
+        if (this.isValid()) {
+            this.props.dispatch(updateStar(this.state.data))
+        }
+    }
+
     fetchStars() {
         this.props.dispatch(fetchStar(+this.props.match.params.id));
+    }
+
+    isValid() {
+        const {data} = this.state;
+        let errors = {};
+        
+        // required fields
+        ['name', 'species', 'diedLocation', 'died', 'mass', 'height'].map(name => {
+            if (isRequired(data[name])) {
+                errors[name] = `${name} is required`;
+            }
+        });
+
+        this.setState({errors})
+
+        return !Object.keys(errors).length;
     }
 
     redirectToHome() {
@@ -71,6 +167,7 @@ class UpdateStarPage extends Component {
     }
 
 }
+
 export default connect(
     state => ({
         data: state.stars,

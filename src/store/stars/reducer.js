@@ -17,11 +17,13 @@ export default function reducer(state = initialState, action) {
                 count: action.payload.data.length,
                 results: action.payload.data
             };
+
         case start_types.FETCHINNG_STARS_REJECTED:
             return {
                 loading: action.loading,
                 error: action.payload
             };
+
         case start_types.REMOVE_STAR:
             state.results.splice(state.results.findIndex(i => i.id === action.id), 1);
 
@@ -30,6 +32,15 @@ export default function reducer(state = initialState, action) {
                 count: state.count--,
                 results: [...state.results]
             };
+
+        case start_types.UPDATE_STAR:
+            const results = state.results.map(star => {
+                return star.id === action.item.id ? star = action.item : star
+            });
+
+            console.log('results', results);
+
+            return {...state, results};
 
         case start_types.FETCH_STAR:
             return {

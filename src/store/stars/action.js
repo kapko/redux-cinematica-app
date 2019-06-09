@@ -1,6 +1,6 @@
 export const start_types = {
     FETCHINNG_STARS_FULLFIELD: 'FETCHINNG_STARS_FULFILLED',
-    UPDATE_ITEM: 'UPDATE_ITEM',
+    UPDATE_STAR: 'UPDATE_STAR',
     REMOVE_STAR: 'REMOVE_STAR',
     FETCHINNG_STARS_REJECTED: 'FETCHINNG_STARS_REJECTED',
     FETCHINNG_STARS: 'FETCHINNG_STARS',
@@ -31,7 +31,7 @@ export const removeStarById = id => dispatch => (
 
 export const updateStar = item => dispatch => (
     dispatch({
-        type: start_types.UPDATE_ITEM,
+        type: start_types.UPDATE_STAR,
         item
     })
 );
