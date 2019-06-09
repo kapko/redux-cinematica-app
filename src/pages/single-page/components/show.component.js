@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 // local files
 import Image from '../../../common/components/image/image.component'
 import RemoveTitle from './sub-components/remove.title'
@@ -16,7 +16,7 @@ export default class ShowStar extends Component {
         const removeTitle = this.state.showTitle ? <RemoveTitle
             name={item.name}
             remove={this.removeStar.bind(this)}
-            cancel={() => this.setState({showTitle: false})}/> : null;
+            cancel={() => this.setState({ showTitle: false })} /> : null;
 
         return (
             <div className="col-md-6 offset-3">
@@ -32,21 +32,21 @@ export default class ShowStar extends Component {
                 <p><b>Height:</b>  {item.height || '-'}</p>
                 <p><b>Eye Color:</b>  {item.eyeColor || '-'}</p>
                 <hr />
-                <Link
-                    to={`/update/${item.id}`}
-                    className="btn btn-warning text-white">Update star</Link>
                 <button
                     className="btn btn-danger"
-                    onClick={() => this.setState({showTitle: true})}>Remove start</button>
+                    onClick={() => this.setState({ showTitle: true })}>Remove start</button>
                 <button
                     onClick={this.props.toHome}
                     className="btn btn-warning text-white">Cancel</button>
+                <Link
+                    to={`/update/${item.id}`}
+                    className="btn btn-warning text-white">Update star</Link>
             </div>
         );
     }
 
     removeStar() {
-        const {item} = this.props;
+        const { item } = this.props;
         this.props.removeStar(+item.id);
     }
 }

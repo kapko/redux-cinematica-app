@@ -68,7 +68,7 @@ class UpdateStarPage extends Component {
 
         return <div>
             <h3>Update this Star</h3>
-            <Link to="/">Home page</Link>
+
             <form onSubmit={this.onSubmit.bind(this)}>
                 <Input
                     type="text"
@@ -138,7 +138,8 @@ class UpdateStarPage extends Component {
         e.preventDefault();
 
         if (this.isValid()) {
-            this.props.dispatch(updateStar(this.state.data))
+            this.props.dispatch(updateStar(this.state.data));
+            this.props.history.push('/');
         }
     }
 

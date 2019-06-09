@@ -38,8 +38,6 @@ export default function reducer(state = initialState, action) {
                 return star.id === action.item.id ? star = action.item : star
             });
 
-            console.log('results', results);
-
             return {...state, results};
 
         case start_types.FETCH_STAR:
