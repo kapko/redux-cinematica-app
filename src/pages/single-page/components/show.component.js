@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Link} from 'react-router-dom'
 // local files
 import Image from '../../../common/components/image/image.component'
 import RemoveTitle from './sub-components/remove.title'
@@ -31,7 +32,9 @@ export default class ShowStar extends Component {
                 <p><b>Height:</b>  {item.height || '-'}</p>
                 <p><b>Eye Color:</b>  {item.eyeColor || '-'}</p>
                 <hr />
-                <button className="btn btn-warning text-white">Update star</button>
+                <Link
+                    to={`/update/${item.id}`}
+                    className="btn btn-warning text-white">Update star</Link>
                 <button
                     className="btn btn-danger"
                     onClick={() => this.setState({showTitle: true})}>Remove start</button>

@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import { isRequired, isEmail } from '../../common/helpers/validator';
-import {credos, setItem} from '../../services/storage.js';
-import InputText from '../../common/fields/input';
-import Button from '../../common/fields/button';
+import React, { Component } from 'react'
+import { isRequired, isEmail } from '../../common/helpers/validator'
+import { credos, setItem } from '../../services/storage.js'
+import InputText from '../../common/fields/input'
+import Button from '../../common/fields/button'
+import { SmallText } from '../../common/helpers/error-text/error-text'
 
 export class LoginPage extends Component {
 
@@ -15,28 +16,29 @@ export class LoginPage extends Component {
     }
 
     onChange(e) {
-        const data = {...this.state.data, [e.target.name]: e.target.value};
-        this.setState({data});
+        const data = { ...this.state.data, [e.target.name]: e.target.value };
+        this.setState({ data });
     }
 
     onSubmit(e) {
         e.preventDefault();
         // validate
-        this.validate();
-
-        if (!this.state.errors) {
+        if (!this.validate()) {
             const loginData = JSON.stringify(credos);
             const data = JSON.stringify(this.state.data);
 
             if (loginData === data) {
                 this.props.history.push('/');
                 setItem('auth', 'true');
+            } else {
+                this.setState({errors: {auth: 'Password or email is not correct'}})
             }
         }
+
     }
 
     validate() {
-        let {email, password} = this.state.data;
+        let { email, password } = this.state.data;
         let errors = {};
 
         if (!isEmail(email)) {
@@ -47,33 +49,34 @@ export class LoginPage extends Component {
             errors.password = 'Password is required';
         }
 
-        if (!Object.keys(errors).length) {
-            errors = null;
-        }
-
         this.setState({errors});
+
+        return Object.keys(errors).length;
     }
 
     render() {
+        const errors = this.state.errors || {};
+
         return (
             <form className="needs-validation" onSubmit={this.onSubmit.bind(this)}>
-                <InputText 
+                <InputText
                     className="form-control"
                     onChange={this.onChange.bind(this)}
                     name="email"
                     label="Email address"
-                    errorText={this.state.errors && this.state.errors.email}
+                    errorText={errors.email}
                     placeholder="Enter email"
                 />
-                <InputText 
+                <InputText
                     className="form-control"
                     onChange={this.onChange.bind(this)}
                     name="password"
                     label="Password"
-                    errorText={this.state.errors && this.state.errors.password}
+                    errorText={errors.password}
                     placeholder="Password"
                 />
-                <Button text="Submit" className="btn btn-primary"/>
+                <SmallText text={errors.auth} />
+                <Button text="Submit" className="btn btn-primary" />
             </form>
 
         );
