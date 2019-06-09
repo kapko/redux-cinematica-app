@@ -4,6 +4,7 @@ import HomePage from './pages/home/home.page';
 import { LoginPage } from './pages/login/login.page';
 import PrivateRoute from './app.router';
 import PageNotFound from './pages/404';
+import SinglePage from './pages/single-page/single-page.component'
 
 export default class App extends Component {
   render() {
@@ -13,6 +14,7 @@ export default class App extends Component {
           <Switch>
             <Route path="/login" exact component={LoginPage} />
             <PrivateRoute exact path="/" component={HomePage} />
+            <PrivateRoute exact path="/star/:id" component={SinglePage} />
             <Route component={PageNotFound} />
           </Switch>
         </Router>

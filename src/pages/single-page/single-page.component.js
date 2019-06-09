@@ -1,34 +1,46 @@
-// import React, { Component } from 'react';
-// import {connect} from 'react-redux';
-// import axios from 'axios';
-// // local files
-// import { env } from '../../env';
-// import { setStars } from '../../store/stars/action';
-// import Star from './components/star.component';
-// import { Loader } from '../../common/components/loader/loader.component';
-// import { ErrorMessage } from '../../common/components/error.component'
+import React, { Component } from 'react'
+import {connect} from 'react-redux'
+// local files
+import { fetchStar, removeStarById } from '../../store/stars/action'
+import ShowStar from './components/show.component';
 
-// class SinglePage extends Component {
+class SinglePage extends Component {
 
-//     url = env.api;
+    componentDidMount() {
+        if (!this.props.data.results.length) {
+            this.redirectToHome();
+        }
+    }
 
-//     componentWillMount() {
-//         this.fetchStars();
-//     }
+    componentWillMount() {
+        this.fetchStars();
+    }
 
-//     render() {
-        
-//     }
+    render() {
+        const { singleStar } = this.props.data;
 
-//     fetchStars() {
-//         this.props.dispatch(setStars(
-//             axios.get(`${this.url}all.json`)
-//         ));
-//     }
+        return singleStar ? <ShowStar
+            toHome={this.redirectToHome.bind(this)}
+            item={singleStar}
+            removeStar={this.removeStar.bind(this)}/> : null;
+    }
 
-// }
-// export default connect(
-//     state => ({
-//         data: state.stars,
-//     })
-// )(HomePage);
+    fetchStars() {
+        this.props.dispatch(fetchStar(+this.props.match.params.id));
+    }
+
+    removeStar(id) {
+        this.props.dispatch(removeStarById(id));
+        this.redirectToHome();
+    }
+
+    redirectToHome() {
+        this.props.history.push('/');
+    }
+
+}
+export default connect(
+    state => ({
+        data: state.stars,
+    })
+)(SinglePage);

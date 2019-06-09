@@ -15,7 +15,7 @@ export default class Image extends Component {
                 <img src={this.props.src}
                     onLoad={() => this.setState({ loaded: true })}
                     style={this.state.loaded ? { opacity: 1 } : { opacity: 0 }}
-                    className={`image`} />
+                    className="image" />
             </div>
 
         )

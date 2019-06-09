@@ -4,7 +4,8 @@ const initialState = {
     count: 0,
     results: [],
     loading: true,
-    error: null
+    error: null,
+    singleStar: null
 }
 
 export default function reducer(state = initialState, action) {
@@ -21,15 +22,20 @@ export default function reducer(state = initialState, action) {
                 loading: action.loading,
                 error: action.payload
             };
-        case start_types.REMOVE_ITEM:
-            const id = state.findIndex(i => i.id === action.id);
-            state.results.splice(id, 1);
+        case start_types.REMOVE_STAR:
+            state.results.splice(state.results.findIndex(i => i.id === action.id), 1);
 
             return {
                 ...state,
-                count: action.payload.count,
+                count: state.count--,
                 results: [...state.results]
             };
+
+        case start_types.FETCH_STAR:
+            return {
+                ...state,
+                singleStar: state.results.find(i => i.id === action.id),
+            }
         default:
             return state;
     }

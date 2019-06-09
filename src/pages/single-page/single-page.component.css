@@ -1,0 +1,13 @@
+p {
+    font-size: 14px;
+}
+
+button {
+    margin-right: 10px;
+}
+
+.alert b {
+    float: none;
+    padding: 0 10px;
+    cursor: pointer;
+}
